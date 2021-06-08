@@ -10,5 +10,8 @@
     "node": "14.x"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "telegraf": "^4.3.0"
+  }
 }
