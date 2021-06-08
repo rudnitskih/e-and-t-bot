@@ -1,34 +1,51 @@
-const http = require('http');
-const {Telegraf, Markup} = require('telegraf');
+const http = require("http");
+const { RecordId } = require("./constants");
+const { NotionManager } = require("./NotionManager");
+const { Telegraf, Markup } = require("telegraf");
 
 const PORT = process.env.PORT || 5000;
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const EventDetails = {
-  EMOTION: '🎭 Эмоция',
-  EMOTION_RANK: '🔢 Сила эмоции'
-}
+
+const notionManager = new NotionManager();
 // const secretPath = `/telegraf/${bot.secretPathComponent()}`
 
-const eventKeyboard = Markup.keyboard([[EventDetails.EMOTION, EventDetails.EMOTION_RANK]]);
-
-bot.start((ctx) => ctx.reply('Welcome'));
-bot.help((ctx) => ctx.reply('Send me a sticker'));
-bot.on('text', async (ctx) => {
-  console.log('Ctx=', ctx);
+bot.start((ctx) => ctx.reply("Welcome"));
+bot.help((ctx) => ctx.reply("Send me a sticker"));
+bot.on("text", async (ctx) => {
+  const thought = ctx.update.message.text;
   // Using context shortcut
-  await ctx.reply('Event added to notion', eventKeyboard);
+  // ctx.telegram.sendMessage("Создаю запись ⏲");
+  await ctx.reply("Создаю запись ⏲");
+
+  await notionManager.addEvent({
+    [RecordId.THOUGHT]: thought,
+  });
+
+  const eventKeyboard = Markup.keyboard([
+    [RecordId.DATE, RecordId.EVENT],
+    [RecordId.EMOTION, RecordId.EMOTION_RANK],
+    [RecordId.THOUGHT, RecordId.THOUGHT_RANK],
+  ]);
+
+  eventKeyboard.resize();
+
+  await ctx.reply("Запись создана ✅", eventKeyboard);
+});
+
+bot.catch((error) => {
+  console.error(undefined, "Global error has happened, %O", error);
 });
 
 bot.launch();
 
-
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+process.once("SIGINT", () => bot.stop("SIGINT"));
+process.once("SIGTERM", () => bot.stop("SIGTERM"));
 
-http.createServer(() => {
-  // bot.webhookCallback(secretPath);
-
-}).listen(PORT, () => {
-  console.log(`Server running at ${PORT}`);
-});
+http
+  .createServer(() => {
+    // bot.webhookCallback(secretPath);
+  })
+  .listen(PORT, () => {
+    console.log(`Server running at ${PORT}`);
+  });
