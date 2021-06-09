@@ -1,6 +1,7 @@
+import localtunnel from "localtunnel";
 import { Scenes, session, Telegraf } from "telegraf";
 import { ActionId } from "./constants.js";
-import { validateEnvVariables } from "./utils.js";
+import { getActionIdFromLastMessage, validateEnvVariables } from "./utils.js";
 import {
   confirmScene,
   emotionRankScene,
@@ -13,13 +14,6 @@ import {
 
 validateEnvVariables();
 
-const PORT = process.env.PORT || 5000;
-const bot = new Telegraf(process.env.BOT_TOKEN);
-const appDomain =
-  process.env.NODE_ENV === "production"
-    ? "fathomless-oasis-27700.herokuapp.com"
-    : "fathomless-oasis-27700.loca.lt";
-
 const stage = new Scenes.Stage([
   emotionScene,
   emotionRankScene,
@@ -29,6 +23,8 @@ const stage = new Scenes.Stage([
   startOverScene,
   confirmScene,
 ]);
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.use(session());
 bot.use(stage.middleware());
@@ -49,13 +45,28 @@ bot.catch((error) => {
   console.error("Global error has happened:", error);
 });
 
-bot.launch({
-  dropPendingUpdates: true,
-  webhook: {
-    domain: `http://${appDomain}`,
-    port: PORT,
-  },
-});
+(async () => {
+  let appUrl = "https://fathomless-oasis-27700.herokuapp.com";
+  const PORT = process.env.PORT || 5000;
+
+  if (process.env.NODE_ENV !== "production") {
+    const tunnel = await localtunnel({ port: PORT });
+
+    appUrl = tunnel.url;
+
+    tunnel.on("close", () => {
+      bot.stop("LOCAL_TUNNEL_CLOSED");
+    });
+  }
+
+  bot.launch({
+    dropPendingUpdates: true,
+    webhook: {
+      domain: appUrl,
+      port: PORT,
+    },
+  });
+})();
 
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));

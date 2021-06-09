@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "lt --port 5000 --subdomain=fathomless-oasis-27700 & DEBUG='telegraf:*' heroku local web",
+    "start": "heroku local web",
     "deploy": "git push heroku main"
   },
   "type": "module",
