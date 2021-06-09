@@ -15,7 +15,7 @@ class NotionManager {
       properties: {
         [ActionMeta[ActionId.DATE].displayName]: {
           type: "date",
-          date: { start: toIsoString(new Date()) },
+          date: { start: toIsoString(data[ActionId.DATE]) },
         },
         [ActionMeta[ActionId.EVENT].displayName]: {
           rich_text: [
@@ -74,8 +74,5 @@ function toIsoString(date) {
     tzo
   );
 }
-
-var dt = new Date();
-console.log(toIsoString(dt));
 
 exports.NotionManager = NotionManager;
