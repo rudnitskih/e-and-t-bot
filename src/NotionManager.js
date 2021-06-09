@@ -1,8 +1,7 @@
-const { ActionMeta } = require("./constants");
-const { ActionId } = require("./constants");
-const { Client } = require("@notionhq/client");
+import { ActionId, ActionMeta } from "./constants.js";
+import { Client } from "@notionhq/client";
 
-class NotionManager {
+export class NotionManager {
   constructor() {
     this.notion = new Client({
       auth: process.env.NOTION_TOKEN,
@@ -74,5 +73,3 @@ function toIsoString(date) {
     tzo
   );
 }
-
-exports.NotionManager = NotionManager;

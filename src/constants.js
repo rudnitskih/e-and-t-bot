@@ -1,4 +1,4 @@
-const ActionId = {
+export const ActionId = {
   DATE: "DATE",
   EVENT: "EVENT",
   THOUGHT: "THOUGHT",
@@ -10,7 +10,7 @@ const ActionId = {
 };
 
 // displayName is synced with notion titles -- be careful when change it
-const ActionMeta = {
+export const ActionMeta = {
   [ActionId.DATE]: {
     displayName: "Дата",
     icon: "📅",
@@ -46,14 +46,10 @@ const ActionMeta = {
 };
 
 // prettier-ignore
-const EmotionOptions = [
+export const EmotionOptions = [
   ["Грусть", "Депрессия", "Безысходность", "Печаль"],
   ["Страх", "Тревога"],
   ["Злость", "Агрессия", "Раздражение"],
   ["Стыд", "Вина"],
   ["Отвращение"],
 ];
-
-exports.ActionId = ActionId;
-exports.ActionMeta = ActionMeta;
-exports.EmotionOptions = EmotionOptions;

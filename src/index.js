@@ -1,6 +1,6 @@
-const { ActionMeta, ActionId, EmotionOptions } = require("./constants");
-const { NotionManager } = require("./NotionManager");
-const { Telegraf, Markup, Scenes, session } = require("telegraf");
+import { ActionId, ActionMeta, EmotionOptions } from "./constants.js";
+import { NotionManager } from "./NotionManager.js";
+import { Markup, Scenes, session, Telegraf } from "telegraf";
 
 const Scene = Scenes.BaseScene;
 const Stage = Scenes.Stage;
