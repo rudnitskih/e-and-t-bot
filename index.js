@@ -1,4 +1,3 @@
-const http = require("http");
 const { ActionMeta, ActionId, EmotionOptions } = require("./constants");
 const { NotionManager } = require("./NotionManager");
 const { Telegraf, Markup, Scenes, session } = require("telegraf");
@@ -17,7 +16,10 @@ const notionManager = new NotionManager();
 
 const emotionScene = new Scene(ActionId.EMOTION);
 emotionScene.enter(async (ctx) => {
-  await ctx.reply("Что чувствуешь?", getEmotionsKeyboard());
+  await ctx.reply(
+    `${ActionMeta[ActionId.EMOTION].icon} Что чувствуешь?`,
+    getEmotionsKeyboard()
+  );
 });
 emotionScene.action(/.*/, (ctx) => {
   updateInfo(ctx, ActionId.EMOTION, ctx.match[0]);
@@ -26,7 +28,10 @@ emotionScene.action(/.*/, (ctx) => {
 
 const emotionRankScene = new Scene(ActionId.EMOTION_RANK);
 emotionRankScene.enter(async (ctx) => {
-  await ctx.reply("Сила эмоции:", getRankKeyboard());
+  await ctx.reply(
+    `${ActionMeta[ActionId.EMOTION_RANK].icon} Сила эмоции:`,
+    getRankKeyboard()
+  );
 });
 emotionRankScene.action(/.*/, (ctx) => {
   updateInfo(ctx, ActionId.EMOTION_RANK, ctx.match[0]);
@@ -35,17 +40,23 @@ emotionRankScene.action(/.*/, (ctx) => {
 
 const thoughtScene = new Scene(ActionId.THOUGHT);
 thoughtScene.enter(async (ctx) => {
-  await ctx.reply("Какая мысль была?", getKeyboard(ctx.session));
+  await ctx.reply(
+    `${ActionMeta[ActionId.THOUGHT].icon} Какая мысль была?`,
+    getKeyboard(ctx.session)
+  );
 });
-thoughtScene.on("text", (ctx, next) => {
+thoughtScene.on("text", (ctx) => {
   const command = ctx.message.text;
-  updateInfo(ctx, ActionId.THOUGHT, command);
+  updateInfo(ctx, ActionId.THOUGHT, `«${command}»`);
   ctx.scene.enter(ActionId.THOUGHT_RANK);
 });
 
 const eventScene = new Scene(ActionId.EVENT);
 eventScene.enter(async (ctx) => {
-  await ctx.reply("Событие:", getKeyboard(ctx.session));
+  await ctx.reply(
+    `${ActionMeta[ActionId.EVENT].icon} Событие:`,
+    getKeyboard(ctx.session)
+  );
 });
 eventScene.on("text", (ctx) => {
   const command = ctx.message.text;
@@ -55,7 +66,10 @@ eventScene.on("text", (ctx) => {
 
 const thoughtRankScene = new Scene(ActionId.THOUGHT_RANK);
 thoughtRankScene.enter(async (ctx) => {
-  await ctx.reply("Вера в мысль:", getRankKeyboard());
+  await ctx.reply(
+    `${ActionMeta[ActionId.THOUGHT_RANK].icon} Вера в мысль:`,
+    getRankKeyboard()
+  );
 });
 thoughtRankScene.action(/.*/, (ctx) => {
   updateInfo(ctx, ActionId.THOUGHT_RANK, ctx.match[0]);
@@ -102,8 +116,7 @@ bot.use(session());
 bot.use(stage.middleware());
 
 bot.start(async (ctx) => {
-  await ctx.reply("Начнем", getKeyboard(ctx.session));
-  await ctx.scene.enter(ActionId.EMOTION);
+  await ctx.scene.enter(ActionId.START_OVER);
 });
 
 bot.on("text", async (ctx) => {
