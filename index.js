@@ -170,6 +170,7 @@ bot.catch((error) => {
 });
 
 bot.launch({
+  dropPendingUpdates: true,
   webhook: {
     domain: `http://${appDomain}`,
     port: PORT,
