@@ -98,8 +98,6 @@ const stage = new Stage([
   confirmScene,
 ]);
 
-// const secretPath = `/telegraf/${bot.secretPathComponent()}`
-
 bot.use(session());
 bot.use(stage.middleware());
 
