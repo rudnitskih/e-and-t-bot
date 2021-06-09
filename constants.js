@@ -1,13 +1,52 @@
-const RecordId = {
-  EVENT: "Событие",
-  DATE: "Дата",
-  THOUGHT: "Мысль",
-  THOUGHT_RANK: "Вера в мысль",
-  EMOTION: "Эмоция",
-  EMOTION_RANK: "Сила эмоции",
+const ActionId = {
+  DATE: "DATE",
+  EVENT: "EVENT",
+  THOUGHT: "THOUGHT",
+  THOUGHT_RANK: "THOUGHT_RANK",
+  EMOTION: "EMOTION",
+  EMOTION_RANK: "EMOTION_RANK",
+  START_OVER: "START_OVER",
+  CONFIRM: "CONFIRM",
 };
 
-const ThoughtOptions = [
+// displayName is synced with notion titles -- be careful when change it
+const ActionMeta = {
+  [ActionId.DATE]: {
+    displayName: "Дата",
+    icon: "📅",
+  },
+  [ActionId.EVENT]: {
+    displayName: "Событие",
+    icon: "🎪",
+  },
+  [ActionId.EMOTION]: {
+    displayName: "Эмоция",
+    icon: "🎭",
+  },
+  [ActionId.EMOTION_RANK]: {
+    displayName: "Сила эмоции",
+    icon: "🔢",
+  },
+  [ActionId.THOUGHT]: {
+    displayName: "Мысль",
+    icon: "🧠",
+  },
+  [ActionId.THOUGHT_RANK]: {
+    displayName: "Вера в мысль",
+    icon: "🔢",
+  },
+  [ActionId.START_OVER]: {
+    displayName: "Сначала",
+    icon: "🔁",
+  },
+  [ActionId.CONFIRM]: {
+    displayName: "Отправить",
+    icon: "✅",
+  },
+};
+
+// prettier-ignore
+const EmotionOptions = [
   ["Грусть", "Депрессия", "Безысходность", "Печаль"],
   ["Страх", "Тревога"],
   ["Злость", "Агрессия", "Раздражение"],
@@ -15,14 +54,6 @@ const ThoughtOptions = [
   ["Отвращение"],
 ];
 
-const RecordIcon = {
-  [RecordId.EVENT]: "🎪",
-  [RecordId.DATE]: "📅",
-  [RecordId.EMOTION]: "🎭",
-  [RecordId.EMOTION_RANK]: "🔢",
-  [RecordId.THOUGHT]: "🧠",
-  [RecordId.THOUGHT_RANK]: "🔢",
-};
-
-exports.RecordId = RecordId;
-exports.EventPropertyIcons = RecordIcon;
+exports.ActionId = ActionId;
+exports.ActionMeta = ActionMeta;
+exports.EmotionOptions = EmotionOptions;

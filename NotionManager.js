@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { RecordId } = require("./constants");
+const { ActionMeta } = require("./constants");
+const { ActionId } = require("./constants");
 
 class NotionManager {
   constructor() {
@@ -16,15 +17,15 @@ class NotionManager {
     return this.httpTransport.post("/", {
       parent: { database_id: "1698c5539eeb46ecb452c2607b87e9aa" },
       properties: {
-        [RecordId.DATE]: {
+        [ActionMeta[ActionId.DATE].displayName]: {
           type: "date",
           date: { start: new Date().toISOString() },
         },
-        [RecordId.THOUGHT]: {
+        [ActionMeta[ActionId.THOUGHT].displayName]: {
           title: [
             {
               text: {
-                content: rawData[RecordId.THOUGHT],
+                content: rawData[ActionId.THOUGHT],
               },
             },
           ],
