@@ -62,8 +62,8 @@ const confirmScene = new Scene(ActionId.CONFIRM);
 confirmScene.enter(async (ctx) => {
   await ctx.reply("Создаю запись ⏲");
 
-  console.log("Ctx.message=", ctx.message);
-  ctx.session[ActionId.DATE] = new Date(ctx.message.date * 1000);
+  ctx.session[ActionId.DATE] = new Date();
+
   try {
     await notionManager.addEvent(ctx.session);
     await ctx.reply("Запись создана ✅");
