@@ -53,7 +53,7 @@ class NotionManager {
 // for some reason default `toISOString` doesn't respect timezone
 // let's hardcode Ukrainian timezone
 function toIsoString(date) {
-  const tzo = "+03:00";
+  const tzo = "+00:00";
   const pad = function (num) {
     const norm = Math.floor(Math.abs(num));
     return (norm < 10 ? "0" : "") + norm;
