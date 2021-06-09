@@ -62,10 +62,15 @@ const confirmScene = new Scene(ActionId.CONFIRM);
 confirmScene.enter(async (ctx) => {
   await ctx.reply("Создаю запись ⏲");
 
-  await notionManager.addEvent(ctx.session);
-
-  await ctx.reply("Запись создана ✅");
-  await ctx.scene.enter(ActionId.START_OVER);
+  try {
+    await notionManager.addEvent(ctx.session);
+    await ctx.reply("Запись создана ✅");
+    await ctx.scene.enter(ActionId.START_OVER);
+  } catch (e) {
+    await ctx.reply(
+      (e.response && e.response.data) || e.APIResponseError || e.message
+    );
+  }
 });
 
 const startOverScene = new Scene(ActionId.START_OVER);
@@ -73,7 +78,7 @@ startOverScene.enter(async (ctx) => {
   Object.keys(ActionId).forEach((key) => {
     delete ctx.session[key];
   });
-  await ctx.reply("Новая запись 📁", getKeyboard(ctx.session));
+  await ctx.reply("⏬ Новая запись...", getKeyboard(ctx.session));
   ctx.scene.enter(ActionId.EMOTION);
 });
 
