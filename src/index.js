@@ -46,7 +46,7 @@ bot.catch((error) => {
 });
 
 (async () => {
-  let appUrl = "http://fathomless-oasis-27700.herokuapp.com";
+  let appUrl = "https://fathomless-oasis-27700.herokuapp.com";
   const PORT = process.env.PORT || 5000;
 
   if (process.env.NODE_ENV !== "production") {

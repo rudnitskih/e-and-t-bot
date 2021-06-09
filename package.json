@@ -14,11 +14,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "localtunnel": "^2.0.1",
     "@notionhq/client": "^0.1.9",
     "telegraf": "^4.3.0"
   },
   "devDependencies": {
-    "localtunnel": "^2.0.1",
     "prettier": "^2.3.1"
   }
 }
