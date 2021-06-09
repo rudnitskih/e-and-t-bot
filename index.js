@@ -8,6 +8,10 @@ const Stage = Scenes.Stage;
 
 const PORT = process.env.PORT || 5000;
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const appDomain =
+  process.env.NODE_ENV === "production"
+    ? "fathomless-oasis-27700.herokuapp.com"
+    : "fathomless-oasis-27700.loca.lt";
 
 const notionManager = new NotionManager();
 
@@ -165,16 +169,13 @@ bot.catch((error) => {
   console.error("Global error has happened:", error);
 });
 
-bot.launch();
+bot.launch({
+  webhook: {
+    domain: `http://${appDomain}`,
+    port: PORT,
+  },
+});
 
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
-
-http
-  .createServer(() => {
-    // bot.webhookCallback(secretPath);
-  })
-  .listen(PORT, () => {
-    console.log(`Server running at ${PORT}`);
-  });
