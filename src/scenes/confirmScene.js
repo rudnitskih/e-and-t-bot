@@ -1,6 +1,7 @@
 import { Scenes } from "telegraf";
 import { ActionId } from "../constants.js";
 import { NotionManager } from "../NotionManager.js";
+import { Markup } from "telegraf";
 
 const notionManager = new NotionManager();
 
@@ -13,7 +14,11 @@ confirmScene.enter(async (ctx) => {
   try {
     await notionManager.addEvent(ctx.session);
     await ctx.reply("Запись создана ✅");
-    await ctx.scene.enter(ActionId.START_OVER);
+
+    await ctx.reply(
+      "Запись создана ✅",
+      Markup.keyboard(["/start"]).oneTime().resize()
+    );
   } catch (e) {
     await ctx.reply(
       (e.response && e.response.data) || e.APIResponseError || e.message
